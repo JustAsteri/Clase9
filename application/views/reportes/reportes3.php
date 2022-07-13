@@ -104,46 +104,70 @@
                                 <div class="panel-body">
 
                                     <div class="card-box">
-                                        <!-- Selector de cliente -->
-                                        <div class="col">
-                                            <label for="matricula">Seleccione el Cliente</label>
-                                          <select id="cliente" name="cliente" class="form-control" style="width: 540px; margin: 0 auto;">
-                                            <option value="" >Elije Cliente</option>
+                                        <!-- Tabla -->
+                                        <div class="col-lg-8" style="margin-top: 1.2rem;">
+                                            <div class="panel panel-border panel-info">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">Listado de Clientes</h3>
+                                                </div>
+                                                <div class="table-responsive">
+                                                  <div class="panel-body">
+                                                    <table id="datatable" class="table table-striped table-bordered table-responsive">
+                                                      <thead>
+                                                        <tr>
+                                                          <th>Nombre</th>
+                                                          <th>Empresa</th>
+                                                          <th>Estatus</th>
+                                                          <th>Editar</th>
+                                                          <th>Borrar</th>
 
-                                            <?php
+                                                        </tr>
+                                                      </thead>
+                                                      <tbody>
 
-                                            $valores = count($clientesactivos);
-                                            for ($i=0; $i < $valores ; $i++) {
-                                              $res = $clientesactivos[$i];
-                                              $id = $res -> id_cliente;
-                                              $nombre = $res -> nombre;
-                                              $apaterno = $res -> apaterno;
-                                              $amaterno = $res -> amaterno;
-                                              $nombrecompleto;
+                                                        <?php
 
-                                              $nombrecompleto = $nombre . ' ' . $apaterno . ' ' . $amaterno;
+                                                        $valores = count($clientesactivos);
+                                                        for ($i=0; $i < $valores ; $i++) {
+                                                          $res = $clientesactivos[$i];
+                                                          $id = $res -> id_cliente;
+                                                          $nombre = $res -> nombre;
+                                                          $apaterno= $res -> apaterno;
+                                                          $amaterno = $res -> amaterno;
+                                                          $email = $res -> email;
+                                                          $empresa = $res -> empresa;
+                                                          $estatus = $res -> estado;
 
-                                              echo "<option value='$id' >$nombrecompleto</option>";
-                                              }
-                                              ?>
-                                          </select>
-                                        </div>
 
-                                        <!-- Fechas -->
-                                        <div class="col" style="margin-top: 20px;">
+                                                          $nombre_completo = $nombre . ' ' .$apaterno. ' ' .$amaterno;
 
-                                            <div class="col-md-6">
-                                              <label for="fecha1">Inicio</label>
-                                              <input type="text" class="form-control" id="fecha1" placeholder="yyyy/mm/dd " id="datepicker-autoclose" >
-                                              <span class="input-group-addon bg-custom b-0 text-white"><i class="icon-calender"></i></span>
-                                            </div>
+                                                          echo "
+                                                          <tr>
+                                                            <td>$nombre_completo</td>
+                                                            <td>$empresa</td>";
+                                                            if($estatus == 1) {
+                                                              echo "<td><span class='label label-success'>Activo</span></td>";
+                                                            }else{
+                                                              echo "<td><span class='label label-danger'>Inactivo</span></td>";
+                                                            }
 
-                                            <div class="col-md-6">
-                                              <label for="fecha2">Fin</label>
-                                              <input type="text" class="form-control" id="fecha2" placeholder="yyyy/mm/dd " id="datepicker-autoclose" >
-                                              <span class="input-group-addon bg-custom b-0 text-white"><i class="icon-calender"></i></span>
-                                            </div>
+                                                            echo "<td>";
+                                                            echo "<a href='#' id='Editar' onclick='EditarCliente($id)'><i class='fa fa-pencil'></i> </a>
+                                                            </td>";
 
+                                                            echo "<td>";
+                                                            echo "<a href='#' id='Borrar' onclick='BorrarCliente($id)'><i class='fa fa-close'></i> </a>
+                                                            </td>";
+
+                                                          echo "</tr>";
+                                                        }
+                                                      ?>
+
+                                                      </tbody>
+                                                    </table>
+                                                  </div>
+                                                </div>
+                                              </div>
                                         </div>
 
                                         </div>
@@ -155,7 +179,7 @@
                                         </div>
 
                                         <div class="col-md-12" style="margin: 20px auto;">
-                                            <input type="button" value="PDF" name="" id="boton" class="btn btn-primary" onclick="CitasRangoCliente();" />
+                                            <input type="button" value="PDF" name="" id="boton" class="btn btn-primary" onclick="CitasActivoCliente();" />
                                         </div>
                                     </div>
                                 </div>

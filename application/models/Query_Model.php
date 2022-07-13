@@ -193,6 +193,17 @@ function CitasClienteMes($cliente,$mes)
     return $query->result();
 }
 
+function CitasClienteActivo()
+{
+    $query= $this->db->query("
+        SELECT horarios.id_horario, horarios.cliente, horarios.motivo_visita, clientes.id_cliente, clientes.nombre, clientes.apaterno, clientes.amaterno 
+        FROM horarios 
+        JOIN clientes ON clientes.id_cliente = horarios.cliente
+        AND horarios.estado = '1';
+        ");
+    return $query->result();
+}
+
 /* END - CONTROLLER: REPORTES */
 }
 ?>

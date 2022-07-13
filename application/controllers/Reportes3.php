@@ -15,22 +15,18 @@ class Reportes3 extends MY_Controller {
         $this->loadpageintotemplate($data);
    }
 
-   public function CitasClienteFecha()
+   public function CitasClienteActivo()
    {
-        $cliente = $this->input->post("cliente");
-        $fecha1  = $this->input->post("fecha1");
-        $fecha2  = $this->input->post("fecha2");
-
-        $res = $this->Query_Model->CitasClienteFecha($cliente,$fecha1,$fecha2);
+        $res = $this->Query_Model->CitasClienteActivo();
         echo json_encode($res);
    }
 
-   public function Cliente()
-   {
-        $cliente = $this->input->post("cliente");
+   // public function Cliente()
+   // {
+   //      $cliente = $this->input->post("cliente");
 
-        $res = $this->Query_Model->GetClientById($cliente);
-        echo json_encode($res);
-   }
+   //      $res = $this->Query_Model->GetClientById($cliente);
+   //      echo json_encode($res);
+   // }
 
 } ?>

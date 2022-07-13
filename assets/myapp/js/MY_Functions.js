@@ -2000,7 +2000,158 @@ function BorrarUsuario($id){
         }
         else
         {
-            console.log("test");
+            swal("Cuidado", "...", "warning");
+        }
+
+    }
+
+    function CitasActivoCliente()
+    {
+        var cliente = $('#cliente').val();
+        if (true)
+        {
+            $.ajax({
+                url:myBase_url+"index.php/Reportes3/CitasClienteActivo",
+                type:'POST',
+                data:{cliente:cliente},
+                async: false,
+                success:function(datos){
+                alert(datos);
+                // alert(fecha1);
+
+                $("#preloader").show();
+                $("#boton").attr('disabled',true);
+
+                datoscita = datos;
+
+                // alert(datoscita);
+
+                },
+                error:function (){
+                 swal("Error","1","error");
+                }
+            });
+            var objcitas = JSON.parse(datoscita);
+
+            function buildTableBody(datoscita, columns) {
+                var body = [];
+
+                body.push(columns);
+
+                datoscita.forEach(function(row) {
+                    var dataRow = [];
+
+                    columns.forEach(function(column) {
+                        dataRow.push(row[column].toString());
+                    })
+
+                    body.push(dataRow);
+                });
+
+                return body;
+            }
+
+            //Funcion para construir y estilar la tabla en el formato requerido por PDFmake
+            function tablescitas(datoscita, columns) {
+                return {
+                    style: 'tablecitas',
+                    table: {
+                        widths: ['auto','auto'],
+                        headerRows: 1,
+                        body: buildTableBody(datoscita, columns)
+                    }
+                };
+            } 
+
+
+            //Funcion para cambiar los nombres de los valores del JSON para imprimirlos en la tabla
+            var objrenombradocitas = objcitas.map( item => { 
+                return {Cliente: item.nombre,Motivo: item.motivo_visita}; 
+            });
+
+
+            var docDefinition = {
+
+                //Inicio del contenido del PDF
+                content: [
+                    {
+                        text: 'Citas de clientes activos', style:'header',alignment:'left'
+                    },
+                    { 
+                        text: '\t\t\t\t\t\t\t\t\t\t\t\t', style: 'negro',alignment:'center' 
+                    },
+
+                    { 
+                        text: '\t\t\t\tLista de citas', style: 'titulos' 
+                    },
+
+                    { 
+                        text: '\t\t\t\t\t\t\t\t\t\t\t\t', style: 'negro',alignment:'center' 
+                    },
+
+                    { 
+                        text: '\t\t\t\t\t\t\t\t\t\t\t\t', style: 'negro',alignment:'center' 
+                    },
+
+                    tablescitas(objrenombradocitas, ['Cliente','Motivo']),
+
+                    { 
+                        text: '\t\t\t\t\t\t\t\t\t\t\t\t', style: 'negro',alignment:'center' 
+                    },
+
+                    { 
+                        text: '\t\t\t\t\t\t\t\t\t\t\t\t', style: 'negro',alignment:'center' 
+                    },
+
+
+                ], //Termina contenido del PDF
+
+                //Inician estilos del PDF
+                styles: {
+                    header: {
+                        fontSize: 16,
+                        bold: true
+                    },
+
+                    titulos: {
+                        fontSize: 14,
+                        bold: true,
+                        decoration: 'underline',
+                        alignment: 'center'
+                    },
+
+                    negro:{
+                        bold:true,
+                        fontSize: 12
+                    },
+                    tablecitas: {
+                        margin: [5, 5, 0, 15],
+                        fontSize: 12
+                    },
+
+                    especial: {
+                        margin: [10, 20, 0, 0],
+                        fontSize: 12
+                    },
+                    especialnegro: {
+                        bold:true,
+                        margin: [10, 20, 0, 0],
+                        fontSize: 12
+                    },
+
+                },
+                //Terminan los estilos del PDF
+            };
+
+            pdfMake.createPdf(docDefinition).download("Reporte de Citas de clientes activos"); //Crea y descarga el PDF con el numero dela visita
+            //pdfMake.createPdf(docDefinition).open(); //Abre el PDF en el navegador 
+
+            $("#preloader").hide();
+            $("#boton").attr('disabled',false);
+        }
+        else
+        {
+            swal("Cuidado", "...", "warning");
         }
 
     }
