@@ -2007,16 +2007,14 @@ function BorrarUsuario($id){
 
     function CitasActivoCliente()
     {
-        var cliente = $('#cliente').val();
         if (true)
         {
             $.ajax({
                 url:myBase_url+"index.php/Reportes3/CitasClienteActivo",
                 type:'POST',
-                data:{cliente:cliente},
                 async: false,
                 success:function(datos){
-                alert(datos);
+                // alert(datos);
                 // alert(fecha1);
 
                 $("#preloader").show();
@@ -2024,7 +2022,7 @@ function BorrarUsuario($id){
 
                 datoscita = datos;
 
-                // alert(datoscita);
+                alert(datoscita);
 
                 },
                 error:function (){
@@ -2035,6 +2033,7 @@ function BorrarUsuario($id){
 
             function buildTableBody(datoscita, columns) {
                 var body = [];
+                alert(columns);
 
                 body.push(columns);
 
@@ -2056,7 +2055,7 @@ function BorrarUsuario($id){
                 return {
                     style: 'tablecitas',
                     table: {
-                        widths: ['auto','auto'],
+                        widths: ['auto','auto','auto','auto'],
                         headerRows: 1,
                         body: buildTableBody(datoscita, columns)
                     }
@@ -2066,7 +2065,7 @@ function BorrarUsuario($id){
 
             //Funcion para cambiar los nombres de los valores del JSON para imprimirlos en la tabla
             var objrenombradocitas = objcitas.map( item => { 
-                return {Cliente: item.nombre,Motivo: item.motivo_visita}; 
+                return {Nombre: item.nombre + ' ' + item.apaterno + ' ' + item.amaterno,Telefono: item.telefono, Email: item.email, Empresa: item.empresa}; 
             });
 
 
@@ -2093,7 +2092,15 @@ function BorrarUsuario($id){
                         text: '\t\t\t\t\t\t\t\t\t\t\t\t', style: 'negro',alignment:'center' 
                     },
 
-                    tablescitas(objrenombradocitas, ['Cliente','Motivo']),
+                    tablescitas(objrenombradocitas, ['Nombre','Telefono','Email','Empresa']),
+
+                    { 
+                        text: '\t\t\t\t\t\t\t\t\t\t\t\t', style: 'negro',alignment:'center' 
+                    },
+
+                    { 
+                        text: '\t\t\t\t\t\t\t\t\t\t\t\t', style: 'negro',alignment:'center' 
+                    },
 
                     { 
                         text: '\t\t\t\t\t\t\t\t\t\t\t\t', style: 'negro',alignment:'center' 
@@ -2157,3 +2164,96 @@ function BorrarUsuario($id){
     }
 
 /*END CONTROLLER: Reportes */
+
+/* START CONTROLLER: DASHBOARD */
+
+function RellenaDatosDiaMes(dia)
+{
+    $("tablahorarios").empty();
+
+    var tempodia = dia;
+    var dia = "0"+tempodia;
+    date = new Date();
+    var anio = date.getFullYear();
+    tempo = date.toLocaleString('default',{month:'long'});
+    var mes;
+
+    switch(tempo)
+    {
+        case 'enero':
+            mes = "01";
+            break;
+        case 'febrero':
+            mes = "02";
+            break;
+        case 'marzo':
+            mes = "03";
+            break;
+        case 'abril':
+            mes = "04";
+            break;
+        case 'mayo':
+            mes = "05";
+            break;
+        case 'junio':
+            mes = "06";
+            break;
+        case 'julio':
+            mes = "07";
+            break;
+        case 'agosto':
+            mes = "08";
+            break;
+        case 'septiembre':
+            mes = "09";
+            break;
+        case 'octubre':
+            mes = "10";
+            break;
+        case 'noviembre':
+            mes = "11";
+            break;
+        case 'diciembre':
+            mes = "12";
+            break;
+    }
+
+    if(dia != "" && mes != "" && anio != "")
+    {
+        $.ajax({
+            url:myBase_url+"index.php/Dashboard/CheckDatosCitas",
+            type:'POST',
+            data:{dia:dia, mes:mes, anio:anio},
+            async: false,
+            success:function(datos){
+
+                var obj = JSON.parse(datos);
+                var fechacompleta = "Detalles del dia : " + anio + "/" + mes + "/" + dia;
+                $("#custom-width-modalLable").html(fechacompleta);
+
+                if (obj != "")
+                {
+                    for (var i = 0; i < obj.length; i++)
+                    {
+                        var nombre = obj[i].nombre;
+                        var apaterno = obj[i].apaterno;
+                        var amaterno = obj[i].amaterno;
+                        var hora = obj[i].hora;
+                        var motivo = obj[i].motivo;
+
+                        var nombrecompleto = nombre + " " + apaterno + " " + amaterno;
+
+                        $("tablahorarios").append("<tr></tr>" + nombrecompleto + "</td><td>" + hora + "</td><tr>")
+
+                    }
+                }
+
+            },
+            error:function (){
+             swal("Error","Ha ocurrido un error","error");
+            }
+        });
+    }
+}
+
+/* END CONTROLLER: DASHBOARD */

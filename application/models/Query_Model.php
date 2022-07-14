@@ -196,14 +196,30 @@ function CitasClienteMes($cliente,$mes)
 function CitasClienteActivo()
 {
     $query= $this->db->query("
-        SELECT horarios.id_horario, horarios.cliente, horarios.motivo_visita, clientes.id_cliente, clientes.nombre, clientes.apaterno, clientes.amaterno 
-        FROM horarios 
-        JOIN clientes ON clientes.id_cliente = horarios.cliente
-        AND horarios.estado = '1';
+        SELECT clientes.nombre, clientes.apaterno, clientes.amaterno, clientes.telefono, clientes.email, clientes.empresa
+        FROM clientes 
+        WHERE clientes.estado = '1';
         ");
     return $query->result();
 }
 
 /* END - CONTROLLER: REPORTES */
+
+/* START CONTROLLER: DASHBOARD */
+
+function CheckCitas($fechacompleta)
+{
+    $query = $this->db->query("
+        SELECT horarios.id_horario, horarios.cliente, horarios.dia_visita, horarios.hora_visita,horarios.motivo_visita, clientes.id_cliente, clientes.nombre, clientes.apaterno, clientes.amaterno 
+        FROM horarios 
+        JOIN clientes ON clientes.id_cliente = horarios.cliente 
+        WHERE horarios.fecha_operacion = '$fechacompleta'
+        AND horarios.estado = '1'
+        ");
+        return $query->result();
+    }
+
+/* END CONTROLLER: DASHBOARD */
+
 }
 ?>
