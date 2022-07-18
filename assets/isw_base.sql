@@ -165,3 +165,9 @@ SELECT * FROM clientes;
 SELECT * FROM usuarios;
 SELECT * FROM sesiones_activas;
 SELECT * FROM horarios;
+
+ SELECT horarios.id_horario, horarios.cliente, horarios.fecha_operacion, horarios.dia_visita, horarios.hora_visita,horarios.motivo_visita, clientes.id_cliente, clientes.nombre, clientes.apaterno, clientes.amaterno 
+FROM horarios 
+JOIN clientes ON clientes.id_cliente = horarios.cliente;
+-- WHERE horarios.fecha_operacion = '2022-07-11'
+-- AND clientes.estado = '1';

@@ -210,7 +210,7 @@ function CitasClienteActivo()
 function CheckCitas($fechacompleta)
 {
     $query = $this->db->query("
-        SELECT horarios.id_horario, horarios.cliente, horarios.dia_visita, horarios.hora_visita,horarios.motivo_visita, clientes.id_cliente, clientes.nombre, clientes.apaterno, clientes.amaterno 
+        SELECT horarios.id_horario, horarios.fecha_operacion, horarios.cliente, horarios.dia_visita, horarios.hora_visita,horarios.motivo_visita, clientes.id_cliente, clientes.nombre, clientes.apaterno, clientes.amaterno 
         FROM horarios 
         JOIN clientes ON clientes.id_cliente = horarios.cliente 
         WHERE horarios.fecha_operacion = '$fechacompleta'

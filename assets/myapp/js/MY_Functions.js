@@ -2172,7 +2172,13 @@ function RellenaDatosDiaMes(dia)
     $("tablahorarios").empty();
 
     var tempodia = dia;
-    var dia = "0"+tempodia;
+    // var dia = "0"+tempodia;
+    if (tempodia < 10) {
+        var dia = "0" + tempodia;
+    }
+    else {
+        var dia = tempodia;
+    }
     date = new Date();
     var anio = date.getFullYear();
     tempo = date.toLocaleString('default',{month:'long'});
@@ -2226,24 +2232,29 @@ function RellenaDatosDiaMes(dia)
             data:{dia:dia, mes:mes, anio:anio},
             async: false,
             success:function(datos){
+                // alert(datos);
 
                 var obj = JSON.parse(datos);
                 var fechacompleta = "Detalles del dia : " + anio + "/" + mes + "/" + dia;
-                $("#custom-width-modalLable").html(fechacompleta);
+                $("#custom-width-modalLabel").html(fechacompleta);
+                // alert(obj);
 
                 if (obj != "")
                 {
                     for (var i = 0; i < obj.length; i++)
                     {
-                        var nombre = obj[i].nombre;
+                        var nombre   = obj[i].nombre;
                         var apaterno = obj[i].apaterno;
                         var amaterno = obj[i].amaterno;
-                        var hora = obj[i].hora;
-                        var motivo = obj[i].motivo;
+                        var hora     = obj[i].hora_visita;
+                        var motivo   = obj[i].motivo_visita;
 
                         var nombrecompleto = nombre + " " + apaterno + " " + amaterno;
+                        // alert(nombrecompleto);
+                        // alert(hora);
 
-                        $("tablahorarios").append("<tr></tr>" + nombrecompleto + "</td><td>" + hora + "</td><tr>")
+                        $("#tablahorarios").append("<tr><td>" + nombrecompleto + "</td><td>" + hora + "</td><tr>");
+                        // $("#tablahorarios").append("<tr><td>asfd</td></tr>");
 
                     }
                 }

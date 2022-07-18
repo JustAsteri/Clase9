@@ -20,7 +20,7 @@ class Dashboard extends MY_Controller {
     $dia = $this->input->post('dia');
     $mes = $this->input->post('mes');
     $anio = $this->input->post('anio');
-    $fechacompleta = $dia . "-" . $mes . "-" . $anio;
+    $fechacompleta = $anio . "-" . $mes . "-" . $dia;
 
     $res = $this->Query_Model->CheckCitas($fechacompleta);
     echo json_encode($res);
