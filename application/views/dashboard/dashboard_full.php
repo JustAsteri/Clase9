@@ -7,6 +7,8 @@
             ============================================================== */
     
             echo link_tag('assets/darktemplate/plugins/bootstrap-sweetalert/sweet-alert.css');
+            echo link_tag('assets/darktemplate/plugins/fullcalendar/css/main.css');
+
             
     /* ==============================================================
             <---  JS TEMPLATE  --->
@@ -14,6 +16,10 @@
 
             echo script_tag("assets/darktemplate/plugins/bootstrap-sweetalert/sweet-alert.js");
             echo script_tag("assets/darktemplate/pages/jquery.sweet-alert.init.js");
+            echo script_tag("assets/darktemplate/plugins/fullcalendar/js/main.js");
+            echo script_tag("assets/darktemplate/plugins/fullcalendar/locale/es.js");
+
+
           
     /* ==============================================================
             <---  JS MYAPP  --->
@@ -25,8 +31,6 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="<?= base_url('assets/myapp/css/calendar_js.css'); ?>">
-        <script src="<?= base_url('assets/myapp/js/calendar_js.js'); ?>"></script>
         
     </head>
 
@@ -37,6 +41,77 @@
 
 
         });
+
+        // function LimitaCalendarioMes()
+        // {
+        //     date = new Date();
+        //     var mes = date.getMonth();
+
+        //     switch (mes) 
+        //     {
+        //         case 0:
+        //             $("#mes").html("Enero");
+        //             break;
+        //         case 1:
+        //             $("#mes").html("Febrero");
+        //             $("#l6").hide();
+        //             $("#ma6").hide();
+        //             $("#mi6").hide();
+        //             break;
+        //         case 2:
+        //             $("#mes").html("Marzo");
+        //             break;
+        //         case 3:
+        //             $("#mes").html("Abril");
+        //             $("#mi6").hide();
+        //             break;
+        //         case 4:
+        //             $("#mes").html("Mayo");
+        //             break;
+        //         case 5:
+        //             $("#mes").html("Junio");
+        //             $("#mi6").hide();
+        //             break;
+        //         case 6:
+        //             $("#mes").html("Julio");
+        //             break;
+        //         case 7:
+        //             $("#mes").html("Agosto");
+        //             break;
+        //         case 8:
+        //             $("#mes").html("Septiembre");
+        //             $("#mi6").hide();
+        //             break;
+        //         case 9:
+        //             $("#mes").html("Octubre");
+        //             break;
+        //         case 10:
+        //             $("#mes").html("Noviembre");
+        //             $("#mi6").hide();
+        //             break;
+        //         case 11:
+        //             $("#mes").html("Diciembre");
+        //             break;
+        //     }
+        // }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                locale: 'es',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth'
+                },
+                dateClick: function(info) {
+                    RellenaDatosDiaMes(info.dateStr);
+                }
+            });
+
+            calendar.render();
+        })
 
     </script>
 
@@ -57,7 +132,8 @@
                         <!-- Page-Title -->
                         <div class="row">
                             <div class="col-sm-12">
-                                <h4 class="page-title">Inicio_JS</h4>
+                                <h4 class="page-title">Inicio</h4>
+                               
                             </div>
                         </div>
 
@@ -69,48 +145,8 @@
                                     <h3 class="panel-title" id="mes"></h3>
                                 </div>
                                 <div class="table-responsive">
-                                    <div class="panel-body">
-                                      
-                                    <div id="calendario">
-                                        <div id="anterior" onclick="mesantes()"></div>
-                                        <div id="posterior" onclick="mesdespues()"></div>
-                                        <h2 id="titulos"></h2>
-                                        <table id="diasc">
-                                            <tr id="fila1"><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
-                                            <tr id="fila1"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                                            <tr id="fila2"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                                            <tr id="fila3"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                                            <tr id="fila4"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                                            <tr id="fila5"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                                            <tr id="fila6"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                                        </table>
-                                        <div id="fechaactual"><i onclick="actualizar()">HOY: </i></div>
-                                        <div id="buscafecha">
-                                            <form action="#" name="buscar">
-                                            <p>Buscar ... MES
-                                                <select name="buscames">
-                                                <option value="0">Enero</option>
-                                                <option value="1">Febrero</option>
-                                                <option value="2">Marzo</option>
-                                                <option value="3">Abril</option>
-                                                <option value="4">Mayo</option>
-                                                <option value="5">Junio</option>
-                                                <option value="6">Julio</option>
-                                                <option value="7">Agosto</option>
-                                                <option value="8">Septiembre</option>
-                                                <option value="9">Octubre</option>
-                                                <option value="10">Noviembre</option>
-                                                <option value="11">Diciembre</option>
-                                                </select>
-                                            ... AÑO ...
-                                                <input type="text" name="buscaanno" maxlength="4" size="4" />
-                                            ... 
-                                                <input type="button" value="BUSCAR" onclick="mifecha()" />
-                                            </p>
-                                            </form>
-                                        </div>
-                                    </div>
-
+                                    <div id="calendar"></div>
+                                        
                                       <!-- Inicia modal content -->
                                       <div id="custom-width-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
                                           <div class="modal-dialog" style="width:55%;">

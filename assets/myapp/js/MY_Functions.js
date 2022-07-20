@@ -2167,75 +2167,78 @@ function BorrarUsuario($id){
 
 /* START CONTROLLER: DASHBOARD */
 
-function RellenaDatosDiaMes(dia)
+function RellenaDatosDiaMes(fecha)
 {
-    $("tablahorarios").empty();
+    // $("#custom-width-modal").modal();
+    $("#tablahorarios").empty();
 
-    var tempodia = dia;
-    // var dia = "0"+tempodia;
-    if (tempodia < 10) {
-        var dia = "0" + tempodia;
-    }
-    else {
-        var dia = tempodia;
-    }
-    date = new Date();
-    var anio = date.getFullYear();
-    tempo = date.toLocaleString('default',{month:'long'});
-    var mes;
+    var fecha = fecha;
+    // alert(fecha);
+    // var tempodia = dia;
+    // // var dia = "0"+tempodia;
+    // if (tempodia < 10) {
+    //     var dia = "0" + tempodia;
+    // }
+    // else {
+    //     var dia = tempodia;
+    // }
+    // date = new Date();
+    // var anio = date.getFullYear();
+    // tempo = date.toLocaleString('default',{month:'long'});
+    // var mes;
 
-    switch(tempo)
-    {
-        case 'enero':
-            mes = "01";
-            break;
-        case 'febrero':
-            mes = "02";
-            break;
-        case 'marzo':
-            mes = "03";
-            break;
-        case 'abril':
-            mes = "04";
-            break;
-        case 'mayo':
-            mes = "05";
-            break;
-        case 'junio':
-            mes = "06";
-            break;
-        case 'julio':
-            mes = "07";
-            break;
-        case 'agosto':
-            mes = "08";
-            break;
-        case 'septiembre':
-            mes = "09";
-            break;
-        case 'octubre':
-            mes = "10";
-            break;
-        case 'noviembre':
-            mes = "11";
-            break;
-        case 'diciembre':
-            mes = "12";
-            break;
-    }
+    // switch(tempo)
+    // {
+    //     case 'enero':
+    //         mes = "01";
+    //         break;
+    //     case 'febrero':
+    //         mes = "02";
+    //         break;
+    //     case 'marzo':
+    //         mes = "03";
+    //         break;
+    //     case 'abril':
+    //         mes = "04";
+    //         break;
+    //     case 'mayo':
+    //         mes = "05";
+    //         break;
+    //     case 'junio':
+    //         mes = "06";
+    //         break;
+    //     case 'julio':
+    //         mes = "07";
+    //         break;
+    //     case 'agosto':
+    //         mes = "08";
+    //         break;
+    //     case 'septiembre':
+    //         mes = "09";
+    //         break;
+    //     case 'octubre':
+    //         mes = "10";
+    //         break;
+    //     case 'noviembre':
+    //         mes = "11";
+    //         break;
+    //     case 'diciembre':
+    //         mes = "12";
+    //         break;
+    // }
 
-    if(dia != "" && mes != "" && anio != "")
+    if(fecha != "")
     {
         $.ajax({
-            url:myBase_url+"index.php/Dashboard/CheckDatosCitas",
+            url:myBase_url+"index.php/Dashboard_full/CheckDatosCitas",
             type:'POST',
-            data:{dia:dia, mes:mes, anio:anio},
+            data:{fecha:fecha},
             async: false,
             success:function(datos){
                 // alert(datos);
 
                 var obj = JSON.parse(datos);
-                var fechacompleta = "Detalles del dia : " + anio + "/" + mes + "/" + dia;
+                var fechacompleta = "Detalles del dia : " + fecha;
                 $("#custom-width-modalLabel").html(fechacompleta);
                 // alert(obj);
 
@@ -2257,6 +2260,12 @@ function RellenaDatosDiaMes(dia)
                         // $("#tablahorarios").append("<tr><td>asfd</td></tr>");
 
                     }
+
+                $("#custom-width-modal").modal();
+
+                }
+                else {
+                    swal("Error","No existen datos para esta fecha","error");
                 }
 
             },

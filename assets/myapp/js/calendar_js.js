@@ -64,11 +64,14 @@ function escribirdias() {
          for (i=1;i<7;i++) { //localizar fila
              fila=document.getElementById("fila"+i);
              for (j=0;j<7;j++) {
-                 midia=diames.getDate() 
-                 mimes=diames.getMonth()
-                 mianno=diames.getFullYear()
+                 midia=diames.getDate()
+                 mimes=diames.getMonth();
+                 mianno=diames.getFullYear();
                  celda=fila.getElementsByTagName("td")[j];
                  celda.innerHTML=midia;
+                 celda.innerHTML = 
+                  '<button type="button" id="activa" class="btn btn-primary btn-custom btn-rounded waves-effect waves-light" onclick="RellenaDatosDiaMes(' + midia + ');" align="center" style="font-size: 120%" data-toggle="modal" data-target="#custom-width-modal">' + midia +'</button>'
+                 ;
                  //Recuperar estado inicial al cambiar de mes:
                  celda.style.backgroundColor="#9bf5ff";
                  celda.style.color="#492736";
